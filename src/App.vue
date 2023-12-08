@@ -23,7 +23,7 @@ export default {
     return {
       index: ["Home", "About", "Products"],
       products: {
-        title: ["역삼동원룸", "마포구원룸", "천호동원룸"],
+        title: ["역삼동원룸", "마포구원룸", "송파구원룸"],
         price: [50, 60, 70],
         reportCount: [0, 0, 0],
       },
