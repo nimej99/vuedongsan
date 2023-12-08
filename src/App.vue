@@ -21,7 +21,7 @@ export default {
   //데이터 보관함
   data() {
     return {
-      index: ["Home", "Products", "About"],
+      index: ["Home", "About", "Products"],
       products: {
         title: ["역삼동원룸", "마포구원룸", "천호동원룸"],
         price: [50, 60, 70],
