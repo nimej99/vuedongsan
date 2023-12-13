@@ -1,14 +1,25 @@
 <template>
   <section>
     <Menu />
-    <Discount />
-    <Modal
-      :products="products"
-      :modal="modal"
-      :modalId="modalId"
-      @modalClose="modalClose()"
-      @report="report($event)"
-    />
+
+    <Discount v-if="discount" :disPer="disPer" />
+
+    <button @click="basicSort()">기본값정렬</button>
+    <button @click="priceSort()">가격순정렬</button>
+
+    <!-- :class="{클래스명:조건}" -->
+    <!-- <div class="start" :class="{ end: modal }"> -->
+    <Transition name="fade">
+      <Modal
+        :products="products"
+        :modal="modal"
+        :modalId="modalId"
+        @modalClose="modalClose()"
+        @report="report($event)"
+      />
+    </Transition>
+    <!-- </div> -->
+
     <Card
       :data="products[index]"
       v-for="(data, index) in products"
@@ -30,8 +41,11 @@ export default {
   //데이터 보관함
   data() {
     return {
+      discount: true,
+      disPer: 30,
       modal: false,
       modalId: 0,
+      productsOriginal: [...data],
       products: data,
       // [
       //   {
@@ -66,8 +80,45 @@ export default {
     report(e) {
       this.products[e].report += 1;
     },
+    basicSort() {
+      this.products = [...this.productsOriginal];
+    },
+    priceSort() {
+      this.products.sort((a, b) => a.price - b.price);
+    },
   },
+  // lifecycle hooks
+  /*
+    beforeCreate()
+    created()
+    beforeMount()
+    mounted
+    beforeUpdate()
+    updated()
+    beforeUnmount()
+    unmounted()
+    등등
+  */
+  created() {
+    // ajax 요청시 created, mounted 에 데이터 요청 넣음
+  },
+  mounted() {
+    let Timer = setInterval(() => {
+      if (this.disPer > 10) {
+        this.disPer -= 5;
+      }
+      if (this.disPer == 10) {
+        this.discount = false;
+      }
+    }, 1000);
 
+    if (this.disPer == 10) {
+      clearInterval(Timer);
+    }
+    // setTimeout(() => {
+    //   this.discount = false;
+    // }, 2000);
+  },
   components: {
     Discount: Discount,
     Menu,
@@ -128,4 +179,27 @@ div {
   margin: 10px;
   border-radius: 5px;
 }
+
+.start {
+  opacity: 0;
+  transition: all 1s;
+}
+.end {
+  opacity: 1;
+}
+
+/* 등장 애니메이션 = name속성명-enter-from, active, to */
+/* 시작스타일 */
+.fade-enter-from {
+  opacity: 0;
+}
+/* transition */
+.fade-enter-active {
+  transition: all 1s;
+}
+/* 끝날때스타일 */
+.fade-enter-to {
+  opacity: 1;
+}
+/* 퇴장 애니메이션 = name속성명-leave-from, active, to */
 </style>

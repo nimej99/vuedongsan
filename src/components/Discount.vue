@@ -1,6 +1,6 @@
 <template>
   <article class="discount">
-    <h4>sale</h4>
+    <h4>지금 사면 {{ disPer }}% SALE</h4>
   </article>
 </template>
 
@@ -9,6 +9,9 @@ export default {
   name: "DiscountBanner",
   data() {
     return {};
+  },
+  props: {
+    disPer: Number,
   },
 };
 </script>
